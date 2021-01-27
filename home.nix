@@ -143,6 +143,13 @@ rec {
 
   home.stateVersion = "20.09";
 
+  nixpkgs.config = {
+    vim = {
+      darwin = pkgs.stdenv.isDarwin;
+      gui = "no";
+    };
+  };
+
   programs.bash = {
     enable = true;
     sessionVariables = {
@@ -165,7 +172,16 @@ rec {
   programs.tmux = {
     enable = true;
     escapeTime = 0;
-    extraConfig = builtins.readFile ./programs/tmux/tmux.conf;
+    extraConfig = let
+      shellPackage = pkgs.bashInteractive;
+      defaultCommand = if pkgs.stdenv.isDarwin
+        then "exec ${pkgs.reattach-to-user-namespace}/bin/reattach-to-user-namespace -l ${shellPackage}/bin/bash"
+        else "exec ${shellPackage}/bin/bash";
+    in ''
+      set-option -g default-command '${defaultCommand}'
+
+      ${builtins.readFile ./programs/tmux/tmux.conf}
+    '';
     newSession = true;
     package = pkgs.tmux;
     plugins = [];
