@@ -158,6 +158,8 @@ rec {
     initExtra = ''
       ${catDir ./programs/bash}
 
+      eval "$(${pkgs.coreutils}/bin/dircolors)"
+
       if [ ! -z $BASE16_THEME ]; then
         source ${builtins.fetchTarball {
           url = "https://github.com/fnune/base16-fzf/archive/ef4c386689f18bdc754a830a8e66bc2d46d515ae.tar.gz";
