@@ -38,7 +38,7 @@ let
   catDir = dirName: pkgs.lib.pipe dirName [
     builtins.readDir
     (pkgs.lib.filterAttrs (_: value: value == "regular"))
-    (pkgs.lib.mapAttrsToList (key: _value: key))
+    pkgs.lib.attrNames
     (pkgs.lib.concatMapStrings (name: builtins.readFile (dirName + "/${name}")))
   ];
 
@@ -63,6 +63,21 @@ let
       git clone $repo $directory/$name
     '';
 
+  git-wipped = { runtimeShell, writeScriptBin }:
+    writeScriptBin "git-wipped" ''
+      #!${runtimeShell}
+
+      set -e
+
+      last_commit_message=$(git log -n 1 --format=format:%s)
+
+      if [[ ! $last_commit_message == "[WIP]"* ]];
+      then
+        echo "Last commit not a [WIP]: $last_commit_message" 1>&2
+        exit 1
+      fi
+    '';
+
   git-wip = { runtimeShell, writeScriptBin }:
     writeScriptBin "git-wip" ''
       #!${runtimeShell}
@@ -73,23 +88,27 @@ let
       git commit -m "[WIP]"
     '';
 
-  git-unwip = { runtimeShell, writeScriptBin }:
+  git-unwip = { runtimeShell, writeScriptBin, git-wipped }:
     writeScriptBin "git-unwip" ''
       #!${runtimeShell}
 
-      set -e
+      set -eo pipefail
 
-      last_commit_message=$(git log -n 1 --format=format:%s)
-
-      if [[ $last_commit_message = "[WIP]"* ]]; then
-        git reset HEAD~
-      else
-        echo "Last commit not a [WIP]: $last_commit_message" 1>&2
-        exit 1
-      fi
+      ${git-wipped}/bin/git-wipped && git reset HEAD~
     '';
 
-  git-fixup = { runtimeShell, writeScriptBin }:
+  git-amend-wip = { runtimeShell, writeScriptBin, git-wipped }:
+    writeScriptBin "git-amend-wip" ''
+      #!${runtimeShell}
+
+      set -eo pipefail
+
+      ${git-wipped}/bin/git-wipped && \
+        git add -A && \
+        git commit --amend --no-edit
+    '';
+
+  git-fixup = { runtimeShell, writeScriptBin, git-wip, git-unwip }:
     writeScriptBin "git-fixup" ''
       #!${runtimeShell}
 
@@ -104,9 +123,9 @@ let
       status=$(git status --porcelain 2> /dev/null)
 
       if [[ "$status" != "" ]]; then
-        git wip
+        ${git-wip}/bin/git-wip
         git rebase --interactive --autosquash $last_commit_to_path~
-        git unwip
+        ${git-unwip}/bin/git-unwip
       else
         git rebase --interactive --autosquash $last_commit_to_path~
       fi
@@ -122,13 +141,23 @@ let
         $2
     '';
 
-  scripts = [
-    (pkgs.callPackage clone {})
-    (pkgs.callPackage gifit {})
-    (pkgs.callPackage git-wip {})
-    (pkgs.callPackage git-unwip {})
-    (pkgs.callPackage git-fixup {})
-  ];
+  scripts = {
+    gifit = pkgs.callPackage gifit {};
+
+    clone = pkgs.callPackage clone {};
+    git-wipped = pkgs.callPackage git-wipped {};
+    git-wip = pkgs.callPackage git-wip {};
+    git-unwip = pkgs.callPackage git-unwip {
+      git-wipped = scripts.git-wipped;
+    };
+    git-amend-wip = pkgs.callPackage git-amend-wip {
+      git-wipped = scripts.git-wipped;
+    };
+    git-fixup = pkgs.callPackage git-fixup {
+      git-wip = scripts.git-wip;
+      git-unwip = scripts.git-unwip;
+    };
+  };
 in
 rec {
   imports = [
@@ -347,5 +376,5 @@ rec {
   ] ++ lib.optionals (builtins.currentSystem != "x86_64-darwin") [
     xclip
     xsel
-  ] ++ scripts;
+  ] ++ pkgs.lib.attrValues scripts;
 }
