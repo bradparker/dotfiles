@@ -131,6 +131,15 @@ let
       fi
     '';
 
+  git-trim = { runtimeShell, writeScriptBin, ripgrep }:
+    writeScriptBin "git-trim" ''
+      #!${runtimeShell}
+
+      set -eo pipefail
+
+      git branch --merged | ${ripgrep}/bin/rg -v '^\*|master' | xargs git branch -d
+    '';
+
   gifit = { runtimeShell, ffmpeg, writeScriptBin }:
     writeScriptBin "gifit" ''
       #!${runtimeShell}
@@ -157,6 +166,7 @@ let
       git-wip = scripts.git-wip;
       git-unwip = scripts.git-unwip;
     };
+    git-trim = pkgs.callPackage git-trim {};
   };
 in
 rec {
