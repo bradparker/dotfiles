@@ -50,6 +50,8 @@ let
       source.sha256 = "0nwasskcm0nrf7f52019x4fvxa5zckj4fcvf4cdl0qflrcwb1l9f";
     }) {};
 
+  swiftlint = pkgs.callPackage (import ./packages/swiftlint) {};
+
   clone = { runtimeShell, writeScriptBin }:
     writeScriptBin "clone" ''
       #!${runtimeShell}
@@ -391,5 +393,8 @@ rec {
   ] ++ lib.optionals (builtins.currentSystem != "x86_64-darwin") [
     xclip
     xsel
+  ] ++ lib.optionals (builtins.currentSystem == "x86_64-darwin") [
+    swiftlint
+    swiftformat
   ] ++ pkgs.lib.attrValues scripts;
 }
