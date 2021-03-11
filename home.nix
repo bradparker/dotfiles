@@ -193,6 +193,8 @@ rec {
       darwin = pkgs.stdenv.isDarwin;
       gui = "no";
     };
+
+    android_sdk.accept_license = true;
   };
 
   programs.bash = {
@@ -380,6 +382,7 @@ rec {
     netcat
     nmap
     ormolu
+    pgformatter
     procs
     ripgrep
     rufo
