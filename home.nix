@@ -364,7 +364,6 @@ rec {
     dnsutils
     emv
     entr
-    exa
     fd
     fzf
     ghc
@@ -383,13 +382,9 @@ rec {
     nmap
     ormolu
     pgformatter
-    procs
     ripgrep
     rufo
-    sd
-    solargraph
     tig
-    tokei
     tree
     vim-with-packages
     vulnix
@@ -398,6 +393,5 @@ rec {
     xsel
   ] ++ lib.optionals (builtins.currentSystem == "x86_64-darwin") [
     swiftlint
-    swiftformat
   ] ++ pkgs.lib.attrValues scripts;
 }
