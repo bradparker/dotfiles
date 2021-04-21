@@ -1,10 +1,11 @@
-.DS_Store
-.svn
+!.gitkeep
 *~
 .*.swp
-nohup.out
-npm-debug.log
-!.gitkeep
-.shell.nix
+.DS_Store
+.byebug_history
 .direnv
 .nu-env
+.shell.nix
+.svn
+nohup.out
+npm-debug.log
