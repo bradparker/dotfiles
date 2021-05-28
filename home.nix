@@ -294,6 +294,31 @@ rec {
     };
   };
 
+  programs.neovim = {
+    enable = true;
+    extraConfig = builtins.readFile ./programs/vim/vimrc;
+    plugins = with pkgs.vimPlugins; [
+      ale
+      base16-vim
+      bufexplorer
+      editorconfig-vim
+      fugitive
+      fzf-vim
+      fzfWrapper
+      nerdtree
+      repeat
+      vim-abolish
+      vim-commentary
+      vim-gitgutter
+      vim-grammarous
+      vim-multiple-cursors
+      vim-polyglot
+      vim-sensible
+      vim-surround
+      vim-test
+    ];
+  };
+
   programs.autorandr = {
     enable = builtins.currentSystem != "x86_64-darwin";
 
