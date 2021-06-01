@@ -12,12 +12,6 @@ set nowritebackup
 " Display incomplete commands
 set showcmd
 
-" Colour scheme
-if filereadable(expand("~/.vimrc_background"))
-  let base16colorspace=256
-  source ~/.vimrc_background
-endif
-
 " Switch on highlighting the last used search pattern.
 if (&t_Co > 2 || has("gui_running")) && !exists("syntax_on")
   set hlsearch
@@ -67,28 +61,3 @@ set laststatus=2
 
 " \ is the leader character
 let mapleader = "\\"
-
-" ********************************
-" **** Plugin specific config ****
-" ********************************
-
-" FZF
-nmap <C-P> :FZF<CR>
-
-" ALE
-let g:ale_linters = {
-\   'haskell': ['hlint'],
-\   'javascript': ['eslint'],
-\   'ruby': ['rubocop'],
-\}
-
-let g:ale_fixers = {
-\   'elm': ['format'],
-\   'haskell': ['ormolu'],
-\   'javascript': ['prettier'],
-\   'ruby': ['rubocop'],
-\   'typescript': ['prettier'],
-\}
-
-let g:ale_completion_enabled = 1
-let g:ale_fix_on_save = 1
