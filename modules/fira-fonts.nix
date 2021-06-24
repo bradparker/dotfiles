@@ -16,9 +16,16 @@ with lib;
         source = pkgs.fira-code;
         recursive = true;
       };
+      home.file."Library/Fonts/fira" = {
+        source = pkgs.fira;
+        recursive = true;
+      };
     } else {
       home.file.".fonts/fira-code" = {
         source = pkgs.fira-code;
+      };
+      home.file.".fonts/fira" = {
+        source = pkgs.fira;
       };
     }
   );
