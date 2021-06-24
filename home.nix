@@ -266,52 +266,44 @@ in rec {
     config = { theme = "base16"; };
   };
 
-  programs.neovim = {
+  programs.vim = {
     enable = true;
-    vimAlias = true;
-    vimdiffAlias = true;
 
-    extraConfig = builtins.readFile ./programs/vim/vimrc;
+    extraConfig = ''
+      ${builtins.readFile ./programs/vim/vimrc}
+
+      let g:ale_linters = {
+      \   'haskell': ['hlint'],
+      \   'javascript': ['eslint'],
+      \   'racket': ['raco'],
+      \   'ruby': ['rubocop'],
+      \}
+
+      let g:ale_fixers = {
+      \   'elm': ['format'],
+      \   'haskell': ['ormolu'],
+      \   'javascript': ['prettier'],
+      \   'ruby': ['rubocop'],
+      \   'typescript': ['prettier'],
+      \}
+
+      let g:ale_completion_enabled = 1
+      let g:ale_fix_on_save = 1
+
+      if filereadable(expand("~/.vimrc_background"))
+        let base16colorspace=256
+        source ~/.vimrc_background
+      endif
+
+      nmap <C-P> :FZF<CR>
+    '';
     plugins = with pkgs.vimPlugins; [
-      {
-        plugin = ale;
-        config = ''
-          let g:ale_linters = {
-          \   'haskell': ['hlint'],
-          \   'javascript': ['eslint'],
-          \   'ruby': ['rubocop'],
-          \}
-
-          let g:ale_fixers = {
-          \   'elm': ['format'],
-          \   'haskell': ['ormolu'],
-          \   'javascript': ['prettier'],
-          \   'ruby': ['rubocop'],
-          \   'typescript': ['prettier'],
-          \}
-
-          let g:ale_completion_enabled = 1
-          let g:ale_fix_on_save = 1
-        '';
-      }
-      {
-        plugin = base16-vim;
-        config = ''
-          if filereadable(expand("~/.vimrc_background"))
-            let base16colorspace=256
-            source ~/.vimrc_background
-          endif
-        '';
-      }
+      ale
+      base16-vim
       bufexplorer
       editorconfig-vim
       fugitive
-      {
-        plugin = fzf-vim;
-        config = ''
-          nmap <C-P> :FZF<CR>
-        '';
-      }
+      fzf-vim
       fzfWrapper
       nerdtree
       repeat
