@@ -417,6 +417,7 @@ in rec {
       ripgrep
       rufo
       tig
+      time
       tree
       vulnix
     ]
