@@ -273,7 +273,7 @@ in rec {
       ${builtins.readFile ./programs/vim/vimrc}
 
       let g:ale_linters = {
-      \   'haskell': ['hlint'],
+      \   'haskell': ['hlint', 'hls'],
       \   'javascript': ['eslint'],
       \   'racket': ['raco'],
       \   'ruby': ['rubocop'],
@@ -400,6 +400,7 @@ in rec {
       fzf
       ghc
       git
+      haskell-language-server
       haskellPackages.ghcid
       haskellPackages.hlint
       htop

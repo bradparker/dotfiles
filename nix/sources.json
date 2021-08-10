@@ -17,10 +17,10 @@
         "homepage": "",
         "owner": "dense-analysis",
         "repo": "ale",
-        "rev": "681a6e371d02cce9c2414c19f5deeae61aa321fa",
-        "sha256": "07y7xj0p4dnn7qkjc9nvq6v222fw9gcclf7n9l9w7m021bb451xp",
+        "rev": "a099fe24b2e898c93c0aa4391e5a5631932684a6",
+        "sha256": "0gp764xcspvwmhqhjf8f94y2wxw32ids0zfy22r1z0s2zm85088r",
         "type": "tarball",
-        "url": "https://github.com/dense-analysis/ale/archive/681a6e371d02cce9c2414c19f5deeae61aa321fa.tar.gz",
+        "url": "https://github.com/dense-analysis/ale/archive/a099fe24b2e898c93c0aa4391e5a5631932684a6.tar.gz",
         "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz"
     },
     "home-manager": {
