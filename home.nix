@@ -398,6 +398,7 @@ in rec {
       entr
       fd
       fzf
+      gdu
       ghc
       git
       haskell-language-server
@@ -410,7 +411,6 @@ in rec {
       jq
       libossp_uuid
       lynx
-      ncdu
       netcat
       nmap
       ormolu
