@@ -394,11 +394,11 @@ in rec {
       cabal-install
       coreutils
       dnsutils
+      dua
       emv
       entr
       fd
       fzf
-      gdu
       ghc
       git
       haskell-language-server
