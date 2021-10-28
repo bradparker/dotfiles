@@ -411,7 +411,6 @@ in rec {
       jq
       libossp_uuid
       lynx
-      netcat
       nmap
       ormolu
       pgformatter
