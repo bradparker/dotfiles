@@ -420,6 +420,7 @@ in rec {
       time
       tree
       vulnix
+      watch
     ]
     ++ lib.optionals (builtins.currentSystem != "x86_64-darwin") [ xclip xsel ]
     ++ lib.optionals (builtins.currentSystem == "x86_64-darwin") [ swiftlint ]
