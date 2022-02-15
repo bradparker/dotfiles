@@ -153,6 +153,7 @@ in rec {
     ./modules/roboto-fonts.nix
     ./modules/fira-fonts.nix
     ./modules/firefox-with-desktop-entry.nix
+    ./modules/signal-desktop-with-desktop-entry.nix
   ];
 
   home.username = builtins.getEnv "USER";
@@ -254,6 +255,10 @@ in rec {
   };
 
   programs.firefox-with-desktop-entry = {
+    enable = builtins.currentSystem != "x86_64-darwin";
+  };
+
+  programs.signal-desktop-with-desktop-entry = {
     enable = builtins.currentSystem != "x86_64-darwin";
   };
 
