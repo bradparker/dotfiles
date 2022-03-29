@@ -281,7 +281,7 @@ in rec {
       \   'haskell': ['hlint', 'hls'],
       \   'javascript': ['eslint'],
       \   'racket': ['raco'],
-      \   'ruby': ['rubocop'],
+      \   'ruby': ['rubocop', 'solargraph'],
       \}
 
       let g:ale_fixers = {
@@ -421,6 +421,7 @@ in rec {
       pgformatter
       ripgrep
       rufo
+      solargraph
       tig
       time
       tree
