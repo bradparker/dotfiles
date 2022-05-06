@@ -2,14 +2,15 @@
   name = Brad Parker
   email = hi@bradparker.com
 [alias]
-  co = checkout
-  b = branch
-  s = status
-  p = pull
   a = add
+  b = branch
   c = commit
-  ps = push
+  co = checkout
   lsc = diff-tree --no-commit-id --name-only -r
+  p = pull
+  ps = push
+  s = status
+  sw = switch
 [color]
   diff = auto
   status = auto
