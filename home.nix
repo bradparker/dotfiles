@@ -143,10 +143,6 @@ let
     };
     git-trim = pkgs.callPackage git-trim { };
   };
-
-  in-time-zone = pkgs.callPackage (import (builtins.fetchTarball
-    "https://gist.github.com/bradparker/49d8a97247641cfefd5d07717983eb74/archive/235170823472a8a47b4b94a468d28939a13c1db9.tar.gz"))
-    { };
 in rec {
   imports = [
     ./programs/termonad/module.nix
@@ -411,7 +407,6 @@ in rec {
       haskellPackages.hlint
       htop
       hyperfine
-      in-time-zone
       ipcalc
       jq
       libossp_uuid
