@@ -396,6 +396,7 @@ in rec {
       colima
       coreutils
       dnsutils
+      docker
       dua
       emv
       entr
