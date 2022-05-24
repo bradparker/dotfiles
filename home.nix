@@ -393,6 +393,7 @@ in rec {
       bash-completion
       bashInteractive
       cabal-install
+      colima
       coreutils
       dnsutils
       dua
