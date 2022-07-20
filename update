@@ -2,4 +2,4 @@
 
 set -eo pipefail
 
-nix-shell --run "niv update nixpkgs"
+nix-shell --run "niv update"

@@ -66,5 +66,5 @@ $ ./update
 Which has the effect of running the following
 
 ```
-$ nix-shell --run "niv update nixpkgs-unstable"
+$ nix-shell --run "niv update"
 ```
