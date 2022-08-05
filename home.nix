@@ -278,6 +278,7 @@ in rec {
       \   'javascript': ['eslint'],
       \   'racket': ['raco'],
       \   'ruby': ['rubocop'],
+      \   'eruby': ['erblint'],
       \}
 
       let g:ale_fixers = {
@@ -301,7 +302,6 @@ in rec {
     plugins = with pkgs.vimPlugins; [
       ale
       base16-vim
-      bufexplorer
       editorconfig-vim
       fugitive
       fzf-vim
@@ -311,7 +311,62 @@ in rec {
       vim-abolish
       vim-commentary
       vim-gitgutter
-      vim-grammarous
+      vim-multiple-cursors
+      vim-polyglot
+      vim-sensible
+      vim-surround
+      vim-test
+    ];
+  };
+
+  programs.neovim = {
+    enable = true;
+    extraConfig = builtins.readFile ./programs/vim/vimrc;
+    plugins = with pkgs.vimPlugins; [
+      {
+        plugin = ale;
+        config = ''
+          let g:ale_linters = {
+          \   'haskell': ['hlint', 'hls'],
+          \   'javascript': ['eslint'],
+          \   'racket': ['raco'],
+          \   'ruby': ['rubocop'],
+          \   'eruby': ['erblint'],
+          \}
+          let g:ale_fixers = {
+          \   'elm': ['format'],
+          \   'haskell': ['ormolu'],
+          \   'javascript': ['prettier'],
+          \   'ruby': ['rubocop'],
+          \   'typescript': ['prettier'],
+          \}
+          let g:ale_completion_enabled = 1
+          let g:ale_fix_on_save = 1
+        '';
+      }
+      {
+        plugin = base16-vim;
+        config = ''
+          if filereadable(expand("~/.vimrc_background"))
+            let base16colorspace=256
+            source ~/.vimrc_background
+          endif
+        '';
+      }
+      editorconfig-vim
+      fugitive
+      {
+        plugin = fzf-vim;
+        config = ''
+          nmap <C-P> :FZF<CR>
+        '';
+      }
+      fzfWrapper
+      nerdtree
+      repeat
+      vim-abolish
+      vim-commentary
+      vim-gitgutter
       vim-multiple-cursors
       vim-polyglot
       vim-sensible
