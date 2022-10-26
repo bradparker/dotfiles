@@ -1,16 +1,4 @@
 {
-    "SwiftLint": {
-        "branch": "master",
-        "description": "A tool to enforce Swift style and conventions.",
-        "homepage": "https://realm.github.io/SwiftLint",
-        "owner": "realm",
-        "repo": "SwiftLint",
-        "rev": "2408839be3b312bfbbb81811f2fde29d2d485fac",
-        "sha256": "1qald6dbq94nppn2418ahp3zzv1sx3qw1bdd6r8kyfsz37aimypp",
-        "type": "tarball",
-        "url": "https://github.com/realm/SwiftLint/archive/2408839be3b312bfbbb81811f2fde29d2d485fac.tar.gz",
-        "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz"
-    },
     "ale": {
         "branch": "master",
         "description": "Check syntax in Vim asynchronously and fix files, with Language Server Protocol (LSP) support",
