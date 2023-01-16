@@ -141,6 +141,10 @@ let
     };
     git-trim = pkgs.callPackage git-trim { };
   };
+
+  maiwar = pkgs.callPackage
+    (import (builtins.fetchTarball "https://github.com/bradparker/maiwar/archive/b595a43a1a9d7e900b7dac1491ef695605a34ae6.tar.gz"))
+    {};
 in rec {
   imports = [
     ./programs/termonad/module.nix
@@ -466,6 +470,7 @@ in rec {
       jq
       libossp_uuid
       lynx
+      maiwar
       nmap
       ormolu
       pgformatter
