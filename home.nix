@@ -476,6 +476,7 @@ in rec {
       pgformatter
       ripgrep
       rufo
+      sl
       tig
       time
       tree
