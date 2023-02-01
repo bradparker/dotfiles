@@ -287,8 +287,10 @@ in rec {
       \   'elm': ['format'],
       \   'haskell': ['ormolu'],
       \   'javascript': ['prettier'],
+      \   'javascriptreact': ['prettier'],
       \   'ruby': ['rubocop'],
       \   'typescript': ['prettier'],
+      \   'typescriptreact': ['prettier'],
       \}
 
       let g:ale_completion_enabled = 1
