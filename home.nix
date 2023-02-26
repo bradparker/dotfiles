@@ -143,7 +143,7 @@ let
   };
 
   maiwar = pkgs.callPackage
-    (import (builtins.fetchTarball "https://github.com/bradparker/maiwar/archive/b595a43a1a9d7e900b7dac1491ef695605a34ae6.tar.gz"))
+    (import (builtins.fetchTarball "https://github.com/bradparker/maiwar/archive/06fb9e1e0055fe5ba9fc72ad6970e2ff013703b3.tar.gz"))
     {};
 in rec {
   imports = [
