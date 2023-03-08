@@ -160,11 +160,6 @@ in rec {
   home.stateVersion = "20.09";
 
   nixpkgs.config = {
-    vim = {
-      darwin = pkgs.stdenv.isDarwin;
-      gui = "no";
-    };
-
     android_sdk.accept_license = true;
   };
 
@@ -269,63 +264,23 @@ in rec {
     config = { theme = "base16"; };
   };
 
-  programs.vim = {
+  programs.neovim = {
     enable = true;
-
+    viAlias = false;
+    vimAlias = true;
+    vimdiffAlias = true;
+    withNodeJs = false;
+    withRuby = false;
+    withPython3 = false;
     extraConfig = ''
       ${builtins.readFile ./programs/vim/vimrc}
 
-      let g:ale_linters = {
-      \   'haskell': ['hlint', 'hls'],
-      \   'javascript': ['eslint'],
-      \   'racket': ['raco'],
-      \   'ruby': ['rubocop'],
-      \   'eruby': ['erblint'],
-      \}
-
-      let g:ale_fixers = {
-      \   'elm': ['format'],
-      \   'haskell': ['ormolu'],
-      \   'javascript': ['prettier'],
-      \   'javascriptreact': ['prettier'],
-      \   'ruby': ['rubocop'],
-      \   'typescript': ['prettier'],
-      \   'typescriptreact': ['prettier'],
-      \}
-
-      let g:ale_completion_enabled = 1
-      let g:ale_fix_on_save = 1
-
-      if filereadable(expand("~/.vimrc_background"))
-        let base16colorspace=256
-        source ~/.vimrc_background
-      endif
-
-      nmap <C-P> :FZF<CR>
+      augroup neovim_terminal
+          autocmd!
+          " Disables number lines on terminal buffers
+          autocmd TermOpen * :setlocal nonumber norelativenumber
+      augroup END
     '';
-    plugins = with pkgs.vimPlugins; [
-      ale
-      base16-vim
-      editorconfig-vim
-      fugitive
-      fzf-vim
-      fzfWrapper
-      nerdtree
-      repeat
-      vim-abolish
-      vim-commentary
-      vim-gitgutter
-      vim-multiple-cursors
-      vim-polyglot
-      vim-sensible
-      vim-surround
-      vim-test
-    ];
-  };
-
-  programs.neovim = {
-    enable = true;
-    extraConfig = builtins.readFile ./programs/vim/vimrc;
     plugins = with pkgs.vimPlugins; [
       {
         plugin = ale;
@@ -337,12 +292,15 @@ in rec {
           \   'ruby': ['rubocop'],
           \   'eruby': ['erblint'],
           \}
+
           let g:ale_fixers = {
           \   'elm': ['format'],
           \   'haskell': ['ormolu'],
           \   'javascript': ['prettier'],
+          \   'javascriptreact': ['prettier'],
           \   'ruby': ['rubocop'],
           \   'typescript': ['prettier'],
+          \   'typescriptreact': ['prettier'],
           \}
           let g:ale_completion_enabled = 1
           let g:ale_fix_on_save = 1
@@ -375,7 +333,12 @@ in rec {
       vim-polyglot
       vim-sensible
       vim-surround
-      vim-test
+      {
+        plugin = vim-test;
+        config = ''
+          let test#strategy = "neovim"
+        '';
+      }
     ];
   };
 
