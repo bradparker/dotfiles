@@ -275,6 +275,8 @@ in rec {
     extraConfig = ''
       ${builtins.readFile ./programs/vim/vimrc}
 
+      set nohidden
+
       augroup neovim_terminal
           autocmd!
           " Disables number lines on terminal buffers
