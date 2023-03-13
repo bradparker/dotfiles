@@ -147,7 +147,6 @@ let
     {};
 in rec {
   imports = [
-    ./programs/termonad/module.nix
     ./modules/roboto-fonts.nix
     ./modules/fira-fonts.nix
     ./modules/firefox-with-desktop-entry.nix
@@ -240,11 +239,6 @@ in rec {
         };
       };
     };
-  };
-
-  programs.termonad = {
-    enable = builtins.currentSystem != "x86_64-darwin";
-    configuration = builtins.readFile ./programs/termonad/termonad.hs;
   };
 
   programs.firefox-with-desktop-entry = {
