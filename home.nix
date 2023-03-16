@@ -34,8 +34,8 @@ let
 
       repo=$1
       directory=$HOME/Code/$(dirname $repo | cut -d ':' -f 2)
-      name=$(basename $repo | cut -d '.' -f 1)
-      mkdir -p directory
+      name=$(basename $repo | sed 's/\.git$//')
+      mkdir -p $directory
       git clone $repo $directory/$name
     '';
 
