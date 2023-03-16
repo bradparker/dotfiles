@@ -142,16 +142,6 @@ let
       git branch --merged | ${ripgrep}/bin/rg -v '^\*|master' | xargs git branch -d
     '';
 
-  gifit = { runtimeShell, ffmpeg, writeScriptBin }:
-    writeScriptBin "gifit" ''
-      #!${runtimeShell}
-
-      ${ffmpeg}/bin/ffmpeg \
-        -i $1 \
-        -filter_complex "[0:v] fps=12,scale=720:-1,split [a][b];[a] palettegen [p];[b][p] paletteuse" \
-        $2
-    '';
-
   scripts = {
     cbcopy = pkgs.callPackage cbcopy {};
     cbpaste = pkgs.callPackage cbpaste {};
