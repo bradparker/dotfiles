@@ -39,6 +39,32 @@ let
       git clone $repo $directory/$name
     '';
 
+  cbcopy = { runtimeShell, writeScriptBin }:
+    writeScriptBin "cbcopy" ''
+      #!${runtimeShell}
+
+      if [ -x "$(command -v xclip)" ]; then
+        xclip -selection clipboard $@
+      fi
+
+      if [ -x "$(command -v pbcopy)" ]; then
+        pbcopy $@
+      fi
+    '';
+
+  cbpaste = { runtimeShell, writeScriptBin }:
+    writeScriptBin "cbpaste" ''
+      #!${runtimeShell}
+
+      if [ -x "$(command -v xclip)" ]; then
+        xclip -selection clipboard -o $@
+      fi
+
+      if [ -x "$(command -v pbpaste)" ]; then
+        pbpaste $@
+      end
+    '';
+
   git-wipped = { runtimeShell, writeScriptBin }:
     writeScriptBin "git-wipped" ''
       #!${runtimeShell}
@@ -127,7 +153,8 @@ let
     '';
 
   scripts = {
-    gifit = pkgs.callPackage gifit { };
+    cbcopy = pkgs.callPackage cbcopy {};
+    cbpaste = pkgs.callPackage cbpaste {};
 
     clone = pkgs.callPackage clone { };
     git-wipped = pkgs.callPackage git-wipped { };
