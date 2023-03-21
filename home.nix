@@ -227,7 +227,7 @@ in rec {
   };
 
   programs.alacritty = {
-    enable = builtins.currentSystem == "x86_64-darwin";
+    enable = pkgs.stdenv.isDarwin;
     settings = {
       shell = {
         program = "${programs.tmux.package}/bin/tmux";
@@ -259,11 +259,11 @@ in rec {
   };
 
   programs.firefox-with-desktop-entry = {
-    enable = builtins.currentSystem != "x86_64-darwin";
+    enable = pkgs.stdenv.isLinux;
   };
 
   programs.signal-desktop-with-desktop-entry = {
-    enable = builtins.currentSystem != "x86_64-darwin";
+    enable = pkgs.stdenv.isLinux;
   };
 
   fira-fonts.enable = true;
@@ -356,7 +356,7 @@ in rec {
   };
 
   programs.autorandr = {
-    enable = builtins.currentSystem != "x86_64-darwin";
+    enable = pkgs.stdenv.isLinux;
 
     profiles = {
       "aoc" = {
@@ -461,6 +461,6 @@ in rec {
       vulnix
       watch
     ]
-    ++ lib.optionals (builtins.currentSystem != "x86_64-darwin") [ xclip xsel ]
+    ++ lib.optionals pkgs.stdenv.isLinux [ xclip xsel ]
     ++ pkgs.lib.attrValues scripts;
 }

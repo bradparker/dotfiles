@@ -11,7 +11,7 @@ with lib;
   };
 
   config = mkIf cfg.enable (
-    if builtins.currentSystem == "x86_64-darwin" then {
+    if builtins.currentSystem == "x86_64-darwin" || builtins.currentSystem == "aarch64-darwin" then {
       home.file."Library/Fonts/fira-code" = {
         source = pkgs.fira-code;
         recursive = true;
