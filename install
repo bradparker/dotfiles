@@ -4,32 +4,33 @@ set -eo pipefail
 
 get_filesystem_type () {
   if [ -x "$(command -v diskutil)" ]; then
-    printf $(diskutil info / | grep 'Type (Bundle)' | awk -F':' '{ print $2 }' | tr -d '[:space:]')
+    printf "%s" "$(diskutil info / | grep 'Type (Bundle)' | awk -F':' '{ print $2 }' | tr -d '[:space:]')"
   else
     printf "other"
   fi
 }
 
 install_nix () {
-  local filesystem_type=$(get_filesystem_type)
+  local filesystem_type
+  filesystem_type="$(get_filesystem_type)"
   local args=()
 
-  if ! [ $SINGLE_USER == "true" ]; then
+  if ! [ "$SINGLE_USER" = "true" ]; then
     args+=(--daemon)
   fi
 
-  if [ $filesystem_type == "apfs" ]; then
+  if [ "$filesystem_type" = "apfs" ]; then
     args+=(--darwin-use-unencrypted-nix-store-volume)
   fi
 
-  sh <(curl -L https://nixos.org/nix/install) ${args[@]}
+  sh <(curl -L https://nixos.org/nix/install) "${args[@]}"
 
-  . "$HOME/.nix-profile/etc/profile.d/nix.sh"
+  . /nix/var/nix/profiles/default/etc/profile.d/nix.sh
 }
 
 change_shell () {
   sudo bash -c "echo $(which bash) >> /etc/shells"
-  sudo chsh -s $(which bash) $(whoami)
+  sudo chsh -s "$(which bash)" "$(whoami)"
 }
 
 if ! [ -x "$(command -v nix)" ]; then
@@ -43,7 +44,7 @@ fi
 echo "Applying Home Manager Configuration"
 nix-shell --run "home-manager switch -b bak"
 
-if ! [ $SHELL == $(which bash) ]; then
+if ! [ "$SHELL" == "$(which bash)" ]; then
   echo "Changing shell to $(which bash)"
 
   change_shell

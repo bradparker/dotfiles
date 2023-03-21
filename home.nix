@@ -454,6 +454,7 @@ in rec {
       pgformatter
       ripgrep
       rufo
+      shellcheck
       sl
       tig
       time
