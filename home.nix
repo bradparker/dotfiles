@@ -333,7 +333,7 @@ in rec {
       {
         plugin = fzf-vim;
         config = ''
-          nmap <C-P> :FZF<CR>
+          nmap <C-P> :GFiles<CR>
         '';
       }
       fzfWrapper
