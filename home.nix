@@ -62,7 +62,7 @@ let
 
       if [ -x "$(command -v pbpaste)" ]; then
         pbpaste $@
-      end
+      fi
     '';
 
   git-wipped = { runtimeShell, writeScriptBin }:
