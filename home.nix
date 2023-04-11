@@ -425,6 +425,7 @@ in rec {
 
   home.packages = with pkgs;
     [
+      awscli2
       bash-completion
       bashInteractive
       cabal-install
