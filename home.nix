@@ -315,8 +315,14 @@ in rec {
           \   'typescript': ['prettier'],
           \   'typescriptreact': ['prettier'],
           \}
+
           let g:ale_completion_enabled = 1
+
           let g:ale_fix_on_save = 1
+
+          let g:ale_floating_preview = 1
+          let g:ale_detail_to_floating_preview = 1
+          let g:ale_hover_to_floating_preview = 1
         '';
       }
       {
