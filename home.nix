@@ -339,7 +339,7 @@ in rec {
       {
         plugin = fzf-vim;
         config = ''
-          nmap <C-P> :GFiles<CR>
+          nmap <C-P> :execute system('git rev-parse --is-inside-work-tree') =~ 'true' ? 'GFiles' : 'Files'<CR>
         '';
       }
       fzfWrapper
