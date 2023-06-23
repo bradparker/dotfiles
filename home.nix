@@ -423,7 +423,7 @@ in rec {
       lynx
       maiwar
       nmap
-      nodejs-16_x
+      nodejs-18_x
       ormolu
       pgformatter
       ripgrep
