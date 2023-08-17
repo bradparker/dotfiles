@@ -423,6 +423,7 @@ in rec {
       lynx
       maiwar
       nmap
+      nodePackages.ts-node
       nodejs-18_x
       ormolu
       pgformatter
