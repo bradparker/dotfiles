@@ -412,6 +412,7 @@ in rec {
       fzf
       ghc
       git
+      git-credential-oauth
       haskell-language-server
       haskellPackages.ghcid
       haskellPackages.hlint

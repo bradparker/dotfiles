@@ -1,6 +1,9 @@
 [user]
   name = Brad Parker
   email = hi@bradparker.com
+[credential]
+  helper = cache --timeout 7200
+  helper = oauth
 [alias]
   a = add
   b = branch
