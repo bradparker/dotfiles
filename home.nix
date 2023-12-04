@@ -300,7 +300,7 @@ in rec {
         config = ''
           let g:ale_linters = {
           \   'haskell': ['hlint', 'hls'],
-          \   'javascript': ['eslint'],
+          \   'javascript': ['eslint', 'flow_ls'],
           \   'racket': ['raco'],
           \   'ruby': ['rubocop'],
           \   'eruby': ['erblint'],
