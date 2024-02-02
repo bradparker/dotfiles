@@ -426,6 +426,7 @@ in rec {
       nmap
       nodePackages.ts-node
       nodejs-18_x
+      nix
       ormolu
       pgformatter
       ripgrep
