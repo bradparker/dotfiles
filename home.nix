@@ -159,9 +159,6 @@ let
     git-trim = pkgs.callPackage git-trim { };
   };
 
-  maiwar = pkgs.callPackage
-    (import (builtins.fetchTarball "https://github.com/bradparker/maiwar/archive/8698b7bd2846752744407a6db4806937ef109ad3.tar.gz"))
-    {};
 in rec {
   imports = [
     ./modules/roboto-fonts.nix
@@ -422,7 +419,6 @@ in rec {
       jq
       libossp_uuid
       lynx
-      maiwar
       nmap
       nodePackages.ts-node
       nodejs-18_x
