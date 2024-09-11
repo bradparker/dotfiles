@@ -412,6 +412,7 @@ in rec {
       haskell-language-server
       haskellPackages.ghcid
       haskellPackages.hlint
+      heroku
       htop
       hyperfine
       ipcalc
