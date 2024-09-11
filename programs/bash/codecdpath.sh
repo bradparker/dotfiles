@@ -9,5 +9,8 @@ add_to_cdpath () {
 CODE_DIR="$HOME/Code"
 add_to_cdpath "$CODE_DIR"
 
-ABC_CODE_DIR="$CODE_DIR/ABC"
-add_to_cdpath "$ABC_CODE_DIR"
+GITHUB_CODE_DIR="$CODE_DIR/github.com"
+add_to_cdpath "$GITHUB_CODE_DIR"
+
+TLW_CODE_DIR="$GITHUB_CODE_DIR/thelookoutway"
+add_to_cdpath "$TLW_CODE_DIR"
