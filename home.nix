@@ -2,7 +2,7 @@
 let
   sources = import ./nix/sources.nix;
 
-  ale = pkgs.vimUtils.buildVimPluginFrom2Nix {
+  ale = pkgs.vimUtils.buildVimPlugin {
     pname = "ale";
     version = "2020-11-22";
     src = sources.ale;
@@ -163,9 +163,10 @@ in rec {
   imports = [
     ./modules/roboto-fonts.nix
     ./modules/fira-fonts.nix
-    ./modules/firefox-with-desktop-entry.nix
-    ./modules/signal-desktop-with-desktop-entry.nix
   ];
+
+  targets.genericLinux.enable = pkgs.stdenv.isLinux;
+  xdg.enable = pkgs.stdenv.isLinux;
 
   home.username = builtins.getEnv "USER";
   home.homeDirectory = builtins.getEnv "HOME";
@@ -174,6 +175,21 @@ in rec {
 
   nixpkgs.config = {
     android_sdk.accept_license = true;
+  };
+
+  programs.firefox = {
+    enable = pkgs.stdenv.isLinux;
+    package = pkgs.firefox;
+    profiles.brad = {
+      id = 0;
+      isDefault = true;
+      settings = {
+        "font.name.monospace.x-western" = "Roboto Mono";
+        "font.name.sans-serif.x-western" = "Roboto";
+        "font.name.serif.x-western" = "serif";
+        "font.size.monospace.x-western" = "16";
+      };
+    };
   };
 
   programs.bash = {
@@ -253,14 +269,6 @@ in rec {
         };
       };
     };
-  };
-
-  programs.firefox-with-desktop-entry = {
-    enable = pkgs.stdenv.isLinux;
-  };
-
-  programs.signal-desktop-with-desktop-entry = {
-    enable = pkgs.stdenv.isLinux;
   };
 
   fira-fonts.enable = true;
@@ -434,6 +442,10 @@ in rec {
       vulnix
       watch
     ]
-    ++ lib.optionals pkgs.stdenv.isLinux [ xclip xsel ]
+    ++ lib.optionals pkgs.stdenv.isLinux [
+      xclip
+      xsel
+      signal-desktop
+    ]
     ++ pkgs.lib.attrValues scripts;
 }
