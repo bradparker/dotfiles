@@ -1,14 +1,5 @@
-{ pkgs, lib, config, ... }:
+{ config, pkgs, ... }:
 let
-  sources = import ./nix/sources.nix;
-
-  ale = pkgs.vimUtils.buildVimPlugin {
-    pname = "ale";
-    version = "2020-11-22";
-    src = sources.ale;
-    meta.homepage = "https://github.com/dense-analysis/ale/";
-  };
-
   catDir = dirName:
     pkgs.lib.pipe dirName [
       builtins.readDir
@@ -16,15 +7,7 @@ let
       pkgs.lib.attrNames
       (pkgs.lib.concatMapStrings
         (name: builtins.readFile (dirName + "/${name}")))
-    ];
-
-  rufo = pkgs.callPackage ({ buildRubyGem, ruby }:
-    buildRubyGem rec {
-      inherit ruby;
-      gemName = "rufo";
-      version = "0.12.0";
-      source.sha256 = "0nwasskcm0nrf7f52019x4fvxa5zckj4fcvf4cdl0qflrcwb1l9f";
-    }) { };
+      ];
 
   clone = { runtimeShell, writeScriptBin }:
     writeScriptBin "clone" ''
@@ -158,294 +141,243 @@ let
     };
     git-trim = pkgs.callPackage git-trim { };
   };
+in
+{
+  # This value determines the Home Manager release that your configuration is
+  # compatible with. This helps avoid breakage when a new Home Manager release
+  # introduces backwards incompatible changes.
+  #
+  # You should not change this value, even if you update Home Manager. If you do
+  # want to update the value, then make sure to first check the Home Manager
+  # release notes.
+  home.stateVersion = "24.05"; # Please read the comment before changing.
 
-in rec {
-  imports = [
-    ./modules/roboto-fonts.nix
-    ./modules/fira-fonts.nix
-  ];
-
-  targets.genericLinux.enable = pkgs.stdenv.isLinux;
-  xdg.enable = pkgs.stdenv.isLinux;
-
-  home.username = builtins.getEnv "USER";
-  home.homeDirectory = builtins.getEnv "HOME";
-
-  home.stateVersion = "20.09";
-
-  nixpkgs.config = {
-    android_sdk.accept_license = true;
+  home.sessionVariables = {
+    NIX_PATH = "nixpkgs=${pkgs.path}";
   };
 
-  programs.firefox = {
-    enable = pkgs.stdenv.isLinux;
-    package = pkgs.firefox;
-    profiles.brad = {
-      id = 0;
-      isDefault = true;
-      settings = {
-        "font.name.monospace.x-western" = "Roboto Mono";
-        "font.name.sans-serif.x-western" = "Roboto";
-        "font.name.serif.x-western" = "serif";
-        "font.size.monospace.x-western" = "16";
+  home.packages = with pkgs; [
+    awscli2
+    bash-completion
+    bashInteractive
+    cabal-install
+    colima
+    coreutils
+    dnsutils
+    docker
+    dua
+    emv
+    entr
+    fd
+    fira
+    fira-code
+    fzf
+    ghc
+    git
+    haskell-language-server
+    haskellPackages.ghcid
+    haskellPackages.hlint
+    heroku
+    htop
+    hyperfine
+    ipcalc
+    jq
+    libossp_uuid
+    lynx
+    nix
+    nmap
+    nodePackages.ts-node
+    nodejs-18_x
+    ormolu
+    pgformatter
+    ripgrep
+    roboto
+    roboto-mono
+    rufo
+    shellcheck
+    sl
+    tig
+    time
+    tree
+    vulnix
+    watch
+  ]
+  ++ pkgs.lib.attrValues scripts;
+
+  home.file = {
+    ".gitignore".text = builtins.readFile ./programs/git/gitignore;
+    ".gitconfig".text = builtins.readFile ./programs/git/gitconfig;
+
+    ".config/base16-shell" = {
+      source = builtins.fetchTarball {
+        url =
+          "https://github.com/chriskempson/base16-shell/archive/ce8e1e540367ea83cc3e01eec7b2a11783b3f9e1.tar.gz";
+        sha256 = "1yj36k64zz65lxh28bb5rb5skwlinixxz6qwkwaf845ajvm45j1q";
       };
     };
-  };
 
-  programs.bash = {
-    enable = true;
-    sessionVariables = { NIX_PATH = "nixpkgs=${sources.nixpkgs}"; };
-    initExtra = ''
-      ${catDir ./programs/bash}
-
-      eval "$(${pkgs.coreutils}/bin/dircolors)"
-
-      if [ ! -z $BASE16_THEME ]; then
-        source ${
+    ".local/share/git-completion.bash" = {
+      source = "${
           builtins.fetchTarball {
             url =
-              "https://github.com/fnune/base16-fzf/archive/ef4c386689f18bdc754a830a8e66bc2d46d515ae.tar.gz";
-            sha256 = "1hcr9sq3bxnin2b1pn9dzw39ddxsx1a0fr075l62yn9203fvq0hq";
+              "https://github.com/git/git/archive/2befe97201e1f3175cce557866c5822793624b5a.tar.gz";
+            sha256 = "1mz0arnnd715jl891yg8hjplkm4hgn7pxhwfva5lbda801nps2r7";
           }
-        }/bash/base16-$BASE16_THEME.config
-      fi
-    '' + pkgs.lib.optionalString pkgs.stdenv.isLinux ''
-      export LOCALE_ARCHIVE=/usr/lib/locale/locale-archive
-    '';
-  };
-
-  programs.tmux = {
-    enable = true;
-    escapeTime = 0;
-    extraConfig = let
-      shellPackage = pkgs.bashInteractive;
-      defaultCommand = if pkgs.stdenv.isDarwin then
-        "exec ${pkgs.reattach-to-user-namespace}/bin/reattach-to-user-namespace -l ${shellPackage}/bin/bash"
-      else
-        "exec ${shellPackage}/bin/bash";
-    in ''
-      set-option -g default-command '${defaultCommand}'
-
-      ${builtins.readFile ./programs/tmux/tmux.conf}
-    '';
-    newSession = true;
-    package = pkgs.tmux;
-    plugins = [ ];
-    terminal = "screen-256color";
-  };
-
-  programs.direnv = {
-    enable = true;
-    nix-direnv.enable = true;
-  };
-
-  programs.alacritty = {
-    enable = pkgs.stdenv.isDarwin;
-    settings = {
-      shell = {
-        program = "${programs.tmux.package}/bin/tmux";
-        args = [ "attach" ];
-      };
-      window = {
-        decorations = "buttonless";
-        padding = {
-          x = 16;
-          y = 16;
-        };
-      };
-      font = {
-        size = 18;
-        normal = {
-          family = "Fira Code";
-          style = "Regular";
-        };
-        bold = {
-          family = "Fira Code";
-          style = "Bold";
-        };
-        italic = {
-          family = "Fira Code";
-          style = "Italic";
-        };
-      };
+        }/contrib/completion/git-completion.bash";
     };
-  };
 
-  fira-fonts.enable = true;
+    ".editorconfig".text = ''
+      root = true
 
-  roboto-fonts.enable = true;
-
-  programs.bat = {
-    enable = true;
-    config = { theme = "base16"; };
-  };
-
-  programs.neovim = {
-    enable = true;
-    viAlias = false;
-    vimAlias = true;
-    vimdiffAlias = true;
-    withNodeJs = false;
-    withRuby = false;
-    withPython3 = false;
-    extraConfig = ''
-      ${builtins.readFile ./programs/vim/vimrc}
-
-      set nohidden
-
-      augroup neovim_terminal
-          autocmd!
-          " Disables number lines on terminal buffers
-          autocmd TermOpen * :setlocal nonumber norelativenumber
-      augroup END
+      [*]
+      end_of_line = lf
+      trim_trailing_whitespace = true
+      insert_final_newline = true
+      indent_style = space
+      indent_size = 2
     '';
-    plugins = with pkgs.vimPlugins; [
-      {
-        plugin = ale;
-        config = ''
-          let g:ale_linters = {
-          \   'haskell': ['hlint', 'hls'],
-          \   'javascript': ['eslint', 'flow_ls'],
-          \   'racket': ['raco'],
-          \   'ruby': ['rubocop'],
-          \   'eruby': ['erblint'],
-          \}
 
-          let g:ale_fixers = {
-          \   'elm': ['format'],
-          \   'haskell': ['ormolu'],
-          \   'javascript': ['prettier'],
-          \   'javascriptreact': ['prettier'],
-          \   'ruby': ['rubocop'],
-          \   'typescript': ['prettier'],
-          \   'typescriptreact': ['prettier'],
-          \}
-
-          let g:ale_completion_enabled = 1
-
-          let g:ale_fix_on_save = 1
-
-          let g:ale_floating_preview = 1
-          let g:ale_detail_to_floating_preview = 1
-          let g:ale_hover_to_floating_preview = 1
-        '';
-      }
-      {
-        plugin = base16-vim;
-        config = ''
-          if filereadable(expand("~/.vimrc_background"))
-            let base16colorspace=256
-            source ~/.vimrc_background
-          endif
-        '';
-      }
-      editorconfig-vim
-      fugitive
-      {
-        plugin = fzf-vim;
-        config = ''
-          nmap <C-P> :execute system('git rev-parse --is-inside-work-tree') =~ 'true' ? 'GFiles --cached --others --exclude-standard' : 'Files'<CR>
-        '';
-      }
-      fzfWrapper
-      nerdtree
-      repeat
-      vim-abolish
-      vim-commentary
-      vim-gitgutter
-      vim-multiple-cursors
-      vim-polyglot
-      vim-sensible
-      vim-surround
-      {
-        plugin = vim-test;
-        config = ''
-          let test#strategy = "neovim"
-        '';
-      }
-    ];
+    ".ghci".text = builtins.readFile ./programs/ghc/ghci;
   };
 
-  home.file.".gitignore".text = builtins.readFile ./programs/git/gitignore;
-  home.file.".gitconfig".text = builtins.readFile ./programs/git/gitconfig;
+  programs = {
+    home-manager.enable = true;
 
-  home.file.".config/base16-shell" = {
-    source = builtins.fetchTarball {
-      url =
-        "https://github.com/chriskempson/base16-shell/archive/ce8e1e540367ea83cc3e01eec7b2a11783b3f9e1.tar.gz";
-      sha256 = "1yj36k64zz65lxh28bb5rb5skwlinixxz6qwkwaf845ajvm45j1q";
+    bash = {
+      enable = true;
+      initExtra = ''
+        ${catDir ./programs/bash}
+
+        eval "$(${pkgs.coreutils}/bin/dircolors)"
+
+        if [ ! -z $BASE16_THEME ]; then
+          source ${
+            builtins.fetchTarball {
+              url =
+                "https://github.com/fnune/base16-fzf/archive/ef4c386689f18bdc754a830a8e66bc2d46d515ae.tar.gz";
+              sha256 = "1hcr9sq3bxnin2b1pn9dzw39ddxsx1a0fr075l62yn9203fvq0hq";
+            }
+          }/bash/base16-$BASE16_THEME.config
+        fi
+      '' + pkgs.lib.optionalString pkgs.stdenv.isLinux ''
+        export LOCALE_ARCHIVE=/usr/lib/locale/locale-archive
+      '';
     };
-  };
 
-  home.file.".local/share/git-completion.bash" = {
-    source = "${
-        builtins.fetchTarball {
-          url =
-            "https://github.com/git/git/archive/2befe97201e1f3175cce557866c5822793624b5a.tar.gz";
-          sha256 = "1mz0arnnd715jl891yg8hjplkm4hgn7pxhwfva5lbda801nps2r7";
+    tmux = {
+      enable = true;
+      escapeTime = 0;
+      extraConfig = let
+        shellPackage = pkgs.bashInteractive;
+        defaultCommand = if pkgs.stdenv.isDarwin then
+          "exec ${pkgs.reattach-to-user-namespace}/bin/reattach-to-user-namespace -l ${shellPackage}/bin/bash"
+        else
+          "exec ${shellPackage}/bin/bash";
+      in ''
+        set-option -g default-command '${defaultCommand}'
+
+        ${builtins.readFile ./programs/tmux/tmux.conf}
+      '';
+      newSession = true;
+      package = pkgs.tmux;
+      plugins = [ ];
+      terminal = "screen-256color";
+    };
+
+    direnv = {
+      enable = true;
+      nix-direnv.enable = true;
+    };
+
+    bat = {
+      enable = true;
+      config = { theme = "base16"; };
+    };
+
+    neovim = {
+      enable = true;
+      viAlias = false;
+      vimAlias = true;
+      vimdiffAlias = true;
+      withNodeJs = false;
+      withRuby = false;
+      withPython3 = false;
+      extraConfig = ''
+        ${builtins.readFile ./programs/vim/vimrc}
+
+        set nohidden
+
+        augroup neovim_terminal
+            autocmd!
+            " Disables number lines on terminal buffers
+            autocmd TermOpen * :setlocal nonumber norelativenumber
+        augroup END
+      '';
+      plugins = with pkgs.vimPlugins; [
+        {
+          plugin = ale;
+          config = ''
+            let g:ale_linters = {
+            \   'haskell': ['hlint', 'hls'],
+            \   'javascript': ['eslint', 'flow_ls'],
+            \   'racket': ['raco'],
+            \   'ruby': ['rubocop'],
+            \   'eruby': ['erblint'],
+            \}
+
+            let g:ale_fixers = {
+            \   'elm': ['format'],
+            \   'haskell': ['ormolu'],
+            \   'javascript': ['prettier'],
+            \   'javascriptreact': ['prettier'],
+            \   'ruby': ['rubocop'],
+            \   'typescript': ['prettier'],
+            \   'typescriptreact': ['prettier'],
+            \}
+
+            let g:ale_completion_enabled = 1
+
+            let g:ale_fix_on_save = 1
+
+            let g:ale_floating_preview = 1
+            let g:ale_detail_to_floating_preview = 1
+            let g:ale_hover_to_floating_preview = 1
+          '';
         }
-      }/contrib/completion/git-completion.bash";
+        {
+          plugin = base16-vim;
+          config = ''
+            if filereadable(expand("~/.vimrc_background"))
+              let base16colorspace=256
+              source ~/.vimrc_background
+            endif
+          '';
+        }
+        editorconfig-vim
+        fugitive
+        {
+          plugin = fzf-vim;
+          config = ''
+            nmap <C-P> :execute system('git rev-parse --is-inside-work-tree') =~ 'true' ? 'GFiles --cached --others --exclude-standard' : 'Files'<CR>
+          '';
+        }
+        fzfWrapper
+        nerdtree
+        repeat
+        vim-abolish
+        vim-commentary
+        vim-gitgutter
+        vim-multiple-cursors
+        vim-polyglot
+        vim-sensible
+        vim-surround
+        {
+          plugin = vim-test;
+          config = ''
+            let test#strategy = "neovim"
+          '';
+        }
+      ];
+    };
   };
-
-  home.file.".editorconfig".text = ''
-    root = true
-
-    [*]
-    end_of_line = lf
-    trim_trailing_whitespace = true
-    insert_final_newline = true
-    indent_style = space
-    indent_size = 2
-  '';
-
-  home.file.".ghci".text = builtins.readFile ./programs/ghc/ghci;
-
-  home.packages = with pkgs;
-    [
-      awscli2
-      bash-completion
-      bashInteractive
-      cabal-install
-      colima
-      coreutils
-      dnsutils
-      docker
-      dua
-      emv
-      entr
-      fd
-      fzf
-      ghc
-      git
-      haskell-language-server
-      haskellPackages.ghcid
-      haskellPackages.hlint
-      heroku
-      htop
-      hyperfine
-      ipcalc
-      jq
-      libossp_uuid
-      lynx
-      nmap
-      nodePackages.ts-node
-      nodejs-18_x
-      ormolu
-      pgformatter
-      ripgrep
-      rufo
-      shellcheck
-      sl
-      tig
-      time
-      tree
-      vulnix
-      watch
-    ]
-    ++ lib.optionals pkgs.stdenv.isLinux [
-      xclip
-      xsel
-      signal-desktop
-    ]
-    ++ pkgs.lib.attrValues scripts;
 }

@@ -42,7 +42,7 @@ else
 fi
 
 echo "Applying Home Manager Configuration"
-nix-shell --run "home-manager switch -b bak"
+nix run home-manager/release-24.05 -- switch --flake ./
 
 if ! [ "$SHELL" == "$(which bash)" ]; then
   echo "Changing shell to $(which bash)"
