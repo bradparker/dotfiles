@@ -1,2 +1,0 @@
-xrandr --newmode "2880x1620_30.00"  187.48  2880 3032 3336 3792  1620 1621 1624 1648  -HSync +Vsync
-xrandr --addmode HDMI-1 "2880x1620_30.00"
