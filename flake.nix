@@ -12,7 +12,7 @@
   outputs = { nixpkgs, home-manager, ... }:
     {
       homeConfigurations = {
-        "bradparker@Mac" = home-manager.lib.homeManagerConfiguration rec {
+        "bradparker@Mac.localdomain" = home-manager.lib.homeManagerConfiguration rec {
           pkgs = nixpkgs.legacyPackages.aarch64-darwin;
 
           modules = [
