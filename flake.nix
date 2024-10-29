@@ -8,10 +8,40 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
     mac-app-util.url = "github:hraban/mac-app-util";
+    base-16-shell-source = {
+      flake = false;
+      url = "github:chriskempson/base16-shell/ce8e1e540367ea83cc3e01eec7b2a11783b3f9e1";
+    };
+    git-source = {
+      flake = false;
+      url = "github:git/git/2befe97201e1f3175cce557866c5822793624b5a";
+    };
   };
 
-  outputs = { nixpkgs, home-manager, mac-app-util, ... }:
-    {
+  outputs = {
+    nixpkgs,
+    home-manager,
+    mac-app-util,
+    base-16-shell-source,
+    git-source,
+    ...
+  }:
+  let
+    base16-shell = {
+      home.file = {
+        ".config/base16-shell" = {
+          source = base-16-shell-source;
+        };
+      };
+    };
+    git-completion = {
+      home.file = {
+        ".local/share/git-completion.bash" = {
+          source = "${git-source}/contrib/completion/git-completion.bash";
+        };
+      };
+    };
+  in {
       homeConfigurations = {
         "bradparker@Mac.localdomain" = home-manager.lib.homeManagerConfiguration rec {
           pkgs = nixpkgs.legacyPackages.aarch64-darwin;
@@ -56,6 +86,8 @@
               };
             }
             mac-app-util.homeManagerModules.default
+            base16-shell
+            git-completion
             ./home.nix
           ];
         };
@@ -93,6 +125,8 @@
                 };
               };
             }
+            base16-shell
+            git-completion
             ./home.nix
           ];
         };

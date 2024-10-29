@@ -1,5 +1,22 @@
 {
   "nodes": {
+    "base-16-shell-source": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1560619632,
+        "narHash": "sha256-OMhC6paqEOQUnxyb33u0kfKpy8plLSRgp8X8T8w0Q/o=",
+        "owner": "chriskempson",
+        "repo": "base16-shell",
+        "rev": "ce8e1e540367ea83cc3e01eec7b2a11783b3f9e1",
+        "type": "github"
+      },
+      "original": {
+        "owner": "chriskempson",
+        "repo": "base16-shell",
+        "rev": "ce8e1e540367ea83cc3e01eec7b2a11783b3f9e1",
+        "type": "github"
+      }
+    },
     "cl-nix-lite": {
       "locked": {
         "lastModified": 1717972076,
@@ -47,6 +64,23 @@
       "original": {
         "id": "flake-utils",
         "type": "indirect"
+      }
+    },
+    "git-source": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1597708970,
+        "narHash": "sha256-Jwt9bQBItUWL2o7Dfo99kNRJr4To+ZAQlSWcZm1W4Nc=",
+        "owner": "git",
+        "repo": "git",
+        "rev": "2befe97201e1f3175cce557866c5822793624b5a",
+        "type": "github"
+      },
+      "original": {
+        "owner": "git",
+        "repo": "git",
+        "rev": "2befe97201e1f3175cce557866c5822793624b5a",
+        "type": "github"
       }
     },
     "home-manager": {
@@ -124,6 +158,8 @@
     },
     "root": {
       "inputs": {
+        "base-16-shell-source": "base-16-shell-source",
+        "git-source": "git-source",
         "home-manager": "home-manager",
         "mac-app-util": "mac-app-util",
         "nixpkgs": "nixpkgs_2"

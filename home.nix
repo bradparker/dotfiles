@@ -208,24 +208,6 @@ in
     ".gitignore".text = builtins.readFile ./programs/git/gitignore;
     ".gitconfig".text = builtins.readFile ./programs/git/gitconfig;
 
-    ".config/base16-shell" = {
-      source = builtins.fetchTarball {
-        url =
-          "https://github.com/chriskempson/base16-shell/archive/ce8e1e540367ea83cc3e01eec7b2a11783b3f9e1.tar.gz";
-        sha256 = "1yj36k64zz65lxh28bb5rb5skwlinixxz6qwkwaf845ajvm45j1q";
-      };
-    };
-
-    ".local/share/git-completion.bash" = {
-      source = "${
-          builtins.fetchTarball {
-            url =
-              "https://github.com/git/git/archive/2befe97201e1f3175cce557866c5822793624b5a.tar.gz";
-            sha256 = "1mz0arnnd715jl891yg8hjplkm4hgn7pxhwfva5lbda801nps2r7";
-          }
-        }/contrib/completion/git-completion.bash";
-    };
-
     ".editorconfig".text = ''
       root = true
 
