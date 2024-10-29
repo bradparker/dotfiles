@@ -7,9 +7,10 @@
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    mac-app-util.url = "github:hraban/mac-app-util";
   };
 
-  outputs = { nixpkgs, home-manager, ... }:
+  outputs = { nixpkgs, home-manager, mac-app-util, ... }:
     {
       homeConfigurations = {
         "bradparker@Mac.localdomain" = home-manager.lib.homeManagerConfiguration rec {
@@ -54,6 +55,7 @@
                 };
               };
             }
+            mac-app-util.homeManagerModules.default
             ./home.nix
           ];
         };
