@@ -1,6 +1,23 @@
 {
   "nodes": {
-    "base-16-shell-source": {
+    "base16-fzf-source": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1592147790,
+        "narHash": "sha256-GAK83QAiWS8MLQdkB1ToureWBv8t2RuWsNH2NbBOmcE=",
+        "owner": "fnune",
+        "repo": "base16-fzf",
+        "rev": "ef4c386689f18bdc754a830a8e66bc2d46d515ae",
+        "type": "github"
+      },
+      "original": {
+        "owner": "fnune",
+        "ref": "ef4c386689f18bdc754a830a8e66bc2d46d515a",
+        "repo": "base16-fzf",
+        "type": "github"
+      }
+    },
+    "base16-shell-source": {
       "flake": false,
       "locked": {
         "lastModified": 1560619632,
@@ -158,7 +175,8 @@
     },
     "root": {
       "inputs": {
-        "base-16-shell-source": "base-16-shell-source",
+        "base16-fzf-source": "base16-fzf-source",
+        "base16-shell-source": "base16-shell-source",
         "git-source": "git-source",
         "home-manager": "home-manager",
         "mac-app-util": "mac-app-util",
