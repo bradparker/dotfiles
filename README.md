@@ -21,7 +21,7 @@ $ sh <(curl https://nixos.org/nix/install) --daemon
 #### 2. Apply the [Home Manager](https://github.com/rycee/home-manager) configuration
 
 ```
-$ nix-shell --run "home-manager switch"
+$ nix --extra-experimental-features nix-command --extra-experimental-features flakes run home-manager/release-24.05 -- switch --flake .
 ```
 
 #### 3. Change shell to [Bash](https://www.gnu.org/software/bash/)
@@ -52,7 +52,7 @@ $ ./switch
 Which has the effect of running the following
 
 ```
-$ nix-shell --run "home-manager switch"
+$ home-manager switch --flake .
 ```
 
 ## Updating the Nixpkgs version
