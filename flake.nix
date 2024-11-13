@@ -78,9 +78,11 @@
                 alacritty = {
                   enable = true;
                   settings = {
-                    shell = {
-                      program = "${pkgs.tmux}/bin/tmux";
-                      args = [ "attach" ];
+                    terminal = {
+                      shell = {
+                        program = "${pkgs.tmux}/bin/tmux";
+                        args = [ "attach" ];
+                      };
                     };
                     window = {
                       decorations = "buttonless";
