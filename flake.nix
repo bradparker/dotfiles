@@ -24,6 +24,8 @@
       flake = false;
       url = "github:git/git/2befe97201e1f3175cce557866c5822793624b5a";
     };
+
+    nixgl.url = "github:nix-community/nixGL";
   };
 
   outputs = {
@@ -33,6 +35,7 @@
     base16-shell-source,
     base16-fzf-source,
     git-source,
+    nixgl,
     ...
   }:
   let
@@ -121,36 +124,42 @@
           pkgs = nixpkgs.legacyPackages.x86_64-linux;
 
           modules = [
-            {
-              home.username = "brad";
-              home.homeDirectory = "/home/brad";
+            (
+              {config, ...}: {
+                home.username = "brad";
+                home.homeDirectory = "/home/brad";
 
-              targets.genericLinux.enable = true;
-              xdg.enable = true;
+                targets.genericLinux.enable = true;
+                xdg.enable = true;
 
-              home.packages = with pkgs; [
-                xclip
-                xsel
-                signal-desktop
-              ];
+                home.packages = with pkgs; [
+                  xclip
+                  xsel
+                  signal-desktop
+                ];
 
-              programs =  {
-                firefox = {
-                  enable = true;
-                  package = pkgs.firefox;
-                  profiles.brad = {
-                    id = 0;
-                    isDefault = true;
-                    settings = {
-                      "font.name.monospace.x-western" = "Roboto Mono";
-                      "font.name.sans-serif.x-western" = "Roboto";
-                      "font.name.serif.x-western" = "serif";
-                      "font.size.monospace.x-western" = "16";
+                nixGL.packages = nixgl.packages;
+                nixGL.defaultWrapper = "mesa";
+                nixGL.installScripts = [ "mesa" ];
+
+                programs =  {
+                  firefox = {
+                    enable = true;
+                    package = config.lib.nixGL.wrap pkgs.firefox;
+                    profiles.brad = {
+                      id = 0;
+                      isDefault = true;
+                      settings = {
+                        "font.name.monospace.x-western" = "Roboto Mono";
+                        "font.name.sans-serif.x-western" = "Roboto";
+                        "font.name.serif.x-western" = "serif";
+                        "font.size.monospace.x-western" = "16";
+                      };
                     };
                   };
                 };
-              };
-            }
+              }
+            )
             {
               programs.bash.initExtra = ''
                 export LOCALE_ARCHIVE=/usr/lib/locale/locale-archive
