@@ -139,6 +139,7 @@
                   xclip
                   xsel
                   signal-desktop
+                  (config.lib.nixGL.wrap zotero)
                 ];
 
                 nixGL.packages = nixgl.packages;
