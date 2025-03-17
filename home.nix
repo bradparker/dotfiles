@@ -1,4 +1,4 @@
-{ config, pkgs, ... }:
+{ config, pkgs, lib, ... }:
 let
   catDir = dirName:
     pkgs.lib.pipe dirName [
@@ -141,8 +141,11 @@ let
     };
     git-trim = pkgs.callPackage git-trim { };
   };
-in
-{
+in {
+  nixpkgs.config.allowUnfreePredicate = pkg: builtins.elem (lib.getName pkg) [
+    "1password-cli"
+  ];
+
   # This value determines the Home Manager release that your configuration is
   # compatible with. This helps avoid breakage when a new Home Manager release
   # introduces backwards incompatible changes.
@@ -157,6 +160,7 @@ in
   };
 
   home.packages = with pkgs; [
+    _1password-cli
     awscli2
     bash-completion
     bashInteractive
