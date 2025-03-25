@@ -191,7 +191,7 @@ in {
     nix
     nmap
     nodePackages.ts-node
-    nodejs-18_x
+    nodejs
     ormolu
     pgformatter
     ripgrep
