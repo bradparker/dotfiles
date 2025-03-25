@@ -25,7 +25,10 @@
       url = "github:git/git/2befe97201e1f3175cce557866c5822793624b5a";
     };
 
-    nixgl.url = "github:nix-community/nixGL";
+    nixgl = {
+      url = "github:nix-community/nixGL";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs = {
