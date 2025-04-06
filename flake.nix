@@ -140,6 +140,7 @@
                   xsel
                   signal-desktop
                   (config.lib.nixGL.wrap zotero)
+                  picard
                 ];
 
                 nixGL.packages = nixgl.packages;
