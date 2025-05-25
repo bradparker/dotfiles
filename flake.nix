@@ -139,11 +139,12 @@
                 xdg.enable = true;
 
                 home.packages = with pkgs; [
+                  picard
+                  signal-desktop
                   xclip
                   xsel
-                  signal-desktop
+                  (config.lib.nixGL.wrap inkscape)
                   (config.lib.nixGL.wrap zotero)
-                  picard
                 ];
 
                 nixGL.packages = nixgl.packages;
