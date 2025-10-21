@@ -54,17 +54,3 @@ Which has the effect of running the following
 ```
 $ home-manager switch --flake .
 ```
-
-## Updating the Nixpkgs version
-
-Run the script
-
-```
-$ ./update
-```
-
-Which has the effect of running the following
-
-```
-$ nix-shell --run "niv update"
-```
