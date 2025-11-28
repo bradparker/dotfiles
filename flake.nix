@@ -143,7 +143,7 @@
                   signal-desktop
                   xclip
                   xsel
-                  (config.lib.nixGL.wrap comaps)
+                  (config.lib.nixGL.wrap anki)
                   (config.lib.nixGL.wrap inkscape)
                   (config.lib.nixGL.wrap zotero)
                 ];
