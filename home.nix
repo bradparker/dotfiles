@@ -190,7 +190,6 @@ in {
     lynx
     nix
     nmap
-    nodePackages.ts-node
     nodejs
     ormolu
     pgformatter

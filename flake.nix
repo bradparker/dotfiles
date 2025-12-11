@@ -132,11 +132,19 @@
           modules = [
             (
               {config, ...}: {
+                xdg.enable = true;
+
                 home.username = "brad";
                 home.homeDirectory = "/home/brad";
 
-                targets.genericLinux.enable = true;
-                xdg.enable = true;
+                targets.genericLinux = {
+                  enable = true;
+                  nixGL = {
+                    packages = nixgl.packages;
+                    defaultWrapper = "mesa";
+                    installScripts = [ "mesa" ];
+                  };
+                };
 
                 home.packages = with pkgs; [
                   picard
@@ -147,10 +155,6 @@
                   (config.lib.nixGL.wrap inkscape)
                   (config.lib.nixGL.wrap zotero)
                 ];
-
-                nixGL.packages = nixgl.packages;
-                nixGL.defaultWrapper = "mesa";
-                nixGL.installScripts = [ "mesa" ];
 
                 programs =  {
                   firefox = {
