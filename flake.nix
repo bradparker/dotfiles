@@ -75,7 +75,7 @@
     };
   in {
       homeConfigurations = {
-        "bradparker@Mac.localdomain" = home-manager.lib.homeManagerConfiguration rec {
+        "bradparker@Brads-MacBook-Pro.local" = home-manager.lib.homeManagerConfiguration rec {
           pkgs = nixpkgs.legacyPackages.aarch64-darwin;
 
           modules = [
