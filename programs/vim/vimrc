@@ -25,9 +25,6 @@ if has("autocmd")
   " Enable soft-wrapping for text files
   autocmd FileType text,markdown,html,xhtml,eruby setlocal wrap linebreak nolist
 
-  " Fold YAML Files
-  autocmd FileType yaml setlocal foldmethod=indent
-
   " Disable editor config when editing git commit messages
   autocmd FileType gitcommit let b:EditorConfig_disable = 1
 

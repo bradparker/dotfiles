@@ -3,17 +3,17 @@
     "base16-fzf-source": {
       "flake": false,
       "locked": {
-        "lastModified": 1592147790,
-        "narHash": "sha256-GAK83QAiWS8MLQdkB1ToureWBv8t2RuWsNH2NbBOmcE=",
-        "owner": "fnune",
-        "repo": "base16-fzf",
-        "rev": "ef4c386689f18bdc754a830a8e66bc2d46d515ae",
+        "lastModified": 1768700828,
+        "narHash": "sha256-coVZ8U2bMdPoPkkDixLNZ5x9i/BkHDTye85OuVtcxR0=",
+        "owner": "tinted-theming",
+        "repo": "tinted-fzf",
+        "rev": "655ec64c9afaef7f2e8bb2ddc6f529113fb24daf",
         "type": "github"
       },
       "original": {
-        "owner": "fnune",
-        "ref": "ef4c386689f18bdc754a830a8e66bc2d46d515a",
-        "repo": "base16-fzf",
+        "owner": "tinted-theming",
+        "repo": "tinted-fzf",
+        "rev": "655ec64c9afaef7f2e8bb2ddc6f529113fb24daf",
         "type": "github"
       }
     },
@@ -170,9 +170,7 @@
         "cl-nix-lite": "cl-nix-lite",
         "flake-compat": "flake-compat",
         "flake-utils": "flake-utils",
-        "nixpkgs": [
-          "nixpkgs"
-        ],
+        "nixpkgs": "nixpkgs_3",
         "systems": "systems_2",
         "treefmt-nix": "treefmt-nix_2"
       },
@@ -260,6 +258,22 @@
     },
     "nixpkgs_3": {
       "locked": {
+        "lastModified": 1732617236,
+        "narHash": "sha256-PYkz6U0bSEaEB1al7O1XsqVNeSNS+s3NVclJw7YC43w=",
+        "owner": "NixOS",
+        "repo": "nixpkgs",
+        "rev": "af51545ec9a44eadf3fe3547610a5cdd882bc34e",
+        "type": "github"
+      },
+      "original": {
+        "owner": "NixOS",
+        "repo": "nixpkgs",
+        "rev": "af51545ec9a44eadf3fe3547610a5cdd882bc34e",
+        "type": "github"
+      }
+    },
+    "nixpkgs_4": {
+      "locked": {
         "lastModified": 1761236834,
         "narHash": "sha256-+pthv6hrL5VLW2UqPdISGuLiUZ6SnAXdd2DdUE+fV2Q=",
         "owner": "nixos",
@@ -274,7 +288,7 @@
         "type": "github"
       }
     },
-    "nixpkgs_4": {
+    "nixpkgs_5": {
       "locked": {
         "lastModified": 1772554988,
         "narHash": "sha256-8Kb+MSE6QYVX1S96aZOluOMVfvSEOs70vgX980qVUaY=",
@@ -298,7 +312,7 @@
         "home-manager": "home-manager",
         "mac-app-util": "mac-app-util",
         "nixgl": "nixgl",
-        "nixpkgs": "nixpkgs_4"
+        "nixpkgs": "nixpkgs_5"
       }
     },
     "systems": {
@@ -366,7 +380,7 @@
     },
     "treefmt-nix_2": {
       "inputs": {
-        "nixpkgs": "nixpkgs_3"
+        "nixpkgs": "nixpkgs_4"
       },
       "locked": {
         "lastModified": 1766000401,

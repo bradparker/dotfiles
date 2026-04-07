@@ -11,7 +11,6 @@
 
     mac-app-util = {
       url = "github:hraban/mac-app-util";
-      inputs.nixpkgs.follows = "nixpkgs";
     };
 
     base16-shell-source = {
@@ -20,7 +19,7 @@
     };
     base16-fzf-source = {
       flake = false;
-      url = "github:fnune/base16-fzf/ef4c386689f18bdc754a830a8e66bc2d46d515a";
+      url = "github:tinted-theming/tinted-fzf/655ec64c9afaef7f2e8bb2ddc6f529113fb24daf";
     };
 
     git-source = {
@@ -75,7 +74,7 @@
     };
   in {
       homeConfigurations = {
-        "bradparker@Brads-MacBook-Pro.local" = home-manager.lib.homeManagerConfiguration rec {
+        "bradparker@Mac.localdomain" = home-manager.lib.homeManagerConfiguration rec {
           pkgs = nixpkgs.legacyPackages.aarch64-darwin;
 
           modules = [
