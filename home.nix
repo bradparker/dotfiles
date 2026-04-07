@@ -327,21 +327,21 @@ in {
           '';
         }
         editorconfig-vim
-        fugitive
         {
           plugin = fzf-vim;
           config = ''
             nmap <C-P> :execute system('git rev-parse --is-inside-work-tree') =~ 'true' ? 'GFiles --cached --others --exclude-standard' : 'Files'<CR>
           '';
         }
-        fzfWrapper
+        fzf-wrapper
         nerdtree
-        repeat
         vim-abolish
         vim-commentary
+        vim-fugitive
         vim-gitgutter
         vim-multiple-cursors
         vim-polyglot
+        vim-repeat
         vim-sensible
         vim-surround
         {
