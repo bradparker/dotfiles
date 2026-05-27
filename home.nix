@@ -144,6 +144,7 @@ let
 in {
   nixpkgs.config.allowUnfreePredicate = pkg: builtins.elem (lib.getName pkg) [
     "1password-cli"
+    "vim-polyglot"
   ];
 
   # This value determines the Home Manager release that your configuration is
@@ -289,6 +290,7 @@ in {
       plugins = with pkgs.vimPlugins; [
         {
           plugin = ale;
+          type = "viml";
           config = ''
             let g:ale_linters = {
             \   'haskell': ['hlint', 'hls'],
@@ -319,6 +321,7 @@ in {
         }
         {
           plugin = base16-vim;
+          type = "viml";
           config = ''
             if filereadable(expand("~/.vimrc_background"))
               let base16colorspace=256
@@ -329,6 +332,7 @@ in {
         editorconfig-vim
         {
           plugin = fzf-vim;
+          type = "viml";
           config = ''
             nmap <C-P> :execute system('git rev-parse --is-inside-work-tree') =~ 'true' ? 'GFiles --cached --others --exclude-standard' : 'Files'<CR>
           '';
@@ -346,6 +350,7 @@ in {
         vim-surround
         {
           plugin = vim-test;
+          type = "viml";
           config = ''
             let test#strategy = "neovim"
           '';

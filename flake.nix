@@ -159,6 +159,7 @@
                   firefox = {
                     enable = true;
                     package = config.lib.nixGL.wrap pkgs.firefox;
+                    configPath = ".mozilla/firefox";
                     profiles.brad = {
                       id = 0;
                       isDefault = true;
